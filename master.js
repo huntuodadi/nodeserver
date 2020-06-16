@@ -5,9 +5,22 @@ var fork = require('child_process').fork;
 //   fork('./worker.js');
 // }
 
-var n = fork('./worker.js');
-n.on('message', function(m) {
-  console.log('master received message:', m);
-});
-n.send({hello: 'world'});
-console.log('master end');
+// var n = fork('./worker.js');
+// n.on('message', function(m) {
+//   console.log('master received message:', m);
+// });
+// n.send({hello: 'world'});
+// console.log('master end');
+
+var child1 = fork('./worker.js');
+var child2 = fork('./worker.js');
+
+var server = require('net').createServer();
+server.on('connection', function(socket) {
+  socket.end('handle by parent\n');
+})
+server.listen(1337, function() {
+  child1.send('server', server)
+  child2.send('server', server)
+  server.close();
+})

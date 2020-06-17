@@ -17,6 +17,7 @@ var server = http.createServer(function (req, res) {
   res.end('handled by child, pid is ' + process.pid + '\n');
 });
 
+// 每个子进程有一个server  但是tcp只有一个 那就是主进程传过来的
 process.on('message', function (m, tcp) {
   // console.log('message:', m, process.pid);
   if (m === 'server') {

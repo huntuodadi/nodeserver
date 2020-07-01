@@ -27,3 +27,10 @@ process.on('message', function (m, tcp) {
     })
   }
 })
+
+process.on('SIGTERM', () => {
+  console.log('get sigterm:', process.pid);
+  process.exit(1);
+})
+
+// process.kill(process.pid, 'SIGTERM');
